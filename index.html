@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hari Kartini</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+}
+
+/* REGISTER & LOGIN */
+.container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background: linear-gradient(rgba(128,0,32,0.7), rgba(128,0,32,0.7)),
+    url('https://upload.wikimedia.org/wikipedia/commons/8/8e/Kartini.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.box{
+    background:white;
+    padding:40px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.3);
+    text-align:center;
+    width:300px;
+}
+
+.box h2{
+    color:#800020;
+    margin-bottom:30px;
+}
+
+.box img{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:20px;
+    border:3px solid #800020;
+}
+
+input{
+    margin:10px 0;
+    padding:12px;
+    width:100%;
+    border-radius:8px;
+    border:1px solid #ccc;
+    box-sizing:border-box;
+    font-size:14px;
+}
+
+button{
+    padding:12px 25px;
+    background:#800020;
+    border:none;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+    margin-top:15px;
+    width:100%;
+    font-size:16px;
+}
+
+button:hover{
+    background:#5a0016;
+}
+
+.toggle-form{
+    margin-top:15px;
+    font-size:14px;
+    color:#666;
+}
+
+.toggle-form a{
+    color:#800020;
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+.hidden{
+    display:none;
+}
+
+.error{
+    color:red;
+    margin-top:10px;
+    font-size:14px;
+}
+
+/* DASHBOARD */
+header{
+    background:#800020;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+.nav{
+    text-align:center;
+    margin-top:20px;
+}
+
+.nav button{
+    margin:5px;
+    width:auto;
+    padding:10px 20px;
+}
+
+.section{
+    display:none;
+    background:white;
+    padding:20px;
+    margin:20px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.active{
+    display:block;
+}
+
+.logout{
+    background:#a52a2a;
+    margin-top:20px;
+    margin-left:20px;
+    margin-right:20px;
+}
+
+/* BATIK PATTERN BACKGROUND */
+#mainPage{
+    background-color:#f5f5f5;
+    min-height:100vh;
+    position:relative;
+}
+
+#mainPage::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-image:
+        repeating-linear-gradient(45deg, #800020 0px, #800020 10px, transparent 10px, transparent 20px),
+        repeating-linear-gradient(-45deg, #ffffff 0px, #ffffff 10px, transparent 10px, transparent 20px),
+        repeating-linear-gradient(90deg, transparent 0px, transparent 5px, #800020 5px, #800020 6px),
+        repeating-linear-gradient(0deg, transparent 0px, transparent 5px, #ffffff 5px, #ffffff 6px);
+    background-size:40px 40px, 40px 40px, 80px 80px, 80px 80px;
+    background-position:0 0, 20px 20px, 0 0, 0 0;
+    opacity:0.15;
+    pointer-events:none;
+    z-index:0;
+}
+
+#mainPage > *{
+    position:relative;
+    z-index:1;
+}
+
+#home{
+    background:linear-gradient(135deg, #800020 0%, #ffffff 100%);
+    color:white;
+}
+
+#home h2{
+    color:#ffffff;
+    text-shadow:2px 2px 4px rgba(0,0,0,0.3);
+}
+
+#home p{
+    font-size:18px;
+    line-height:1.6;
+}
+</style>
+</head>
+
+<body>
+
+<!-- REGISTER PAGE -->
+<div class="container" id="registerPage">
+    <div class="box">
+        <h2>Daftar Akun 🌸</h2>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Kartini.jpg" alt="Kartini">
+        <input type="text" id="regUsername" placeholder="Username"><br>
+        <input type="password" id="regPassword" placeholder="Password"><br>
+        <input type="password" id="regPasswordConfirm" placeholder="Konfirmasi Password"><br>
+        <button onclick="register()">Daftar</button>
+        <p id="regError" class="error"></p>
+        <div class="toggle-form">
+            Sudah punya akun? <a onclick="switchToLogin()">Login di sini</a>
+        </div>
+    </div>
+</div>
+
+<!-- LOGIN PAGE -->
+<div class="container" id="loginPage" style="display:none;">
+    <div class="box">
+        <h2>Login Hari Kartini 🌸</h2>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Kartini.jpg" alt="Kartini">
+        <input type="text" id="username" placeholder="Username"><br>
+        <input type="password" id="password" placeholder="Password"><br>
+        <button onclick="login()">Masuk</button>
+        <p id="error" class="error"></p>
+        <div class="toggle-form">
+            Belum punya akun? <a onclick="switchToRegister()">Daftar di sini</a>
+        </div>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="mainPage" class="hidden">
+
+<header>
+    <h1 id="welcomeText">Selamat Datang 🌸</h1>
+    <p>21 April</p>
+</header>
+
+<div class="nav">
+    <button onclick="showSection('home')">Beranda</button>
+    <button onclick="showSection('bio')">Biodata</button>
+    <button onclick="showSection('sejarah')">Sejarah</button>
+    <button onclick="showSection('motivasi')">Motivasi</button>
+</div>
+
+<!-- BERANDA -->
+<div id="home" class="section active">
+    <h2>Beranda</h2>
+    <p>Selamat datang di website Hari Kartini 2026.</p>
+</div>
+
+<!-- BIODATA -->
+<div id="bio" class="section">
+<h2>Biodata Singkat R.A. Kartini</h2>
+<p>
+Nama Lengkap: Raden Ajeng Kartini (kemudian menjadi Raden Ayu Kartini)<br><br>
+Tempat, Tanggal Lahir: Jepara, Jawa Tengah, 21 April 1879<br><br>
+Wafat: Rembang, 17 September 1904 (usia 25 tahun)<br><br>
+Orang Tua: Raden Mas Adipati Ario Sosroningrat (Ayah, Bupati Jepara) dan M.A. Ngasirah (Ibu)<br><br>
+Suami: K.R.M Adipati Ario Singgih Djojo Adhiningrat (Bupati Rembang)<br><br>
+Pendidikan: Europeesche Lagere School (ELS) hingga usia 12 tahun<br><br>
+Karya Terkenal: Kumpulan surat Door Duisternis tot Licht (Habis Gelap Terbitlah Terang)<br><br>
+Penetapan Pahlawan: Pahlawan Kemerdekaan Nasional melalui Keppres No. 108 Tahun 1964
+</p>
+</div>
+
+<!-- SEJARAH -->
+<div id="sejarah" class="section">
+<h2>Sejarah & Perjuangan</h2>
+<p>
+R.A. Kartini adalah seorang tokoh perempuan Indonesia yang dikenal sebagai pelopor emansipasi wanita. Ia lahir pada 21 April 1879 di Jepara, Jawa Tengah, dari keluarga bangsawan. Ayahnya adalah Raden Mas Adipati Ario Sosroningrat, seorang bupati Jepara, sedangkan ibunya bernama M.A. Ngasirah.<br><br>
+Sejak kecil, Kartini mendapat kesempatan bersekolah di ELS (Europese Lagere School), sekolah Belanda. Di sana ia belajar bahasa Belanda dan mulai mengenal pemikiran modern tentang pendidikan, kebebasan, dan kesetaraan.<br><br>
+Namun, pada usia sekitar 12 tahun, Kartini harus menjalani tradisi pingitan, yaitu aturan yang membatasi perempuan bangsawan untuk tidak keluar rumah sampai menikah. Walaupun terkurung di rumah, Kartini tidak berhenti belajar. Ia membaca banyak buku, belajar secara mandiri, dan mulai menulis surat kepada teman-temannya di Belanda.<br><br>
+Dari surat-surat tersebut, terlihat pemikiran Kartini yang sangat maju pada zamannya. Ia sangat prihatin dengan kondisi perempuan Indonesia yang saat itu tidak memiliki kebebasan untuk bersekolah, sering dipaksa menikah muda, dan tidak diberi ruang untuk berpendapat atau bekerja. Dari sinilah muncul gagasannya tentang pentingnya pendidikan bagi perempuan dan kesetaraan gender.<br><br>
+Kartini menjalin hubungan surat-menyurat dengan beberapa tokoh Belanda seperti Rosa Abendanon dan Stella Zeehandelaar. Melalui surat-surat itu, pemikirannya mulai dikenal luas hingga ke Eropa.<br><br>
+Pada tahun 1903, Kartini menikah dengan Raden Adipati Joyodiningrat, seorang bupati Rembang. Berbeda dengan kebanyakan aturan saat itu, suaminya mendukung cita-cita Kartini. Di Rembang, Kartini bahkan sempat mendirikan sekolah kecil untuk perempuan sebagai wujud nyata perjuangannya.<br><br>
+Namun, kebahagiaan itu tidak berlangsung lama. Kartini wafat pada 17 September 1904 setelah melahirkan anak pertamanya, dalam usia yang masih sangat muda yaitu 25 tahun.<br><br>
+Setelah wafatnya, pemikiran Kartini dikumpulkan dan diterbitkan dalam buku berjudul "Habis Gelap Terbitlah Terang", yang menjadi simbol perjuangannya untuk pendidikan dan kebebasan perempuan.<br><br>
+Hingga kini, Kartini dikenang sebagai pahlawan nasional dan setiap tanggal 21 April diperingati sebagai Hari Kartini untuk menghormati perjuangannya.
+</p>
+</div>
+
+<!-- MOTIVASI -->
+<div id="motivasi" class="section">
+<h2>Kata Motivasi</h2>
+<p>"Jangan pernah menyerah dalam perjuangan."</p>
+</div>
+
+<button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<script>
+// Database akun (simulasi - dalam praktik gunakan backend)
+let accounts = JSON.parse(localStorage.getItem('accounts')) || {};
+let loggedInUser = null;
+
+function register(){
+    let username = document.getElementById("regUsername").value;
+    let password = document.getElementById("regPassword").value;
+    let passwordConfirm = document.getElementById("regPasswordConfirm").value;
+    let regError = document.getElementById("regError");
+
+    regError.innerText = "";
+
+    if(username === "" || password === ""){
+        regError.innerText = "Username dan password harus diisi!";
+        return;
+    }
+
+    if(password !== passwordConfirm){
+        regError.innerText = "Password tidak cocok!";
+        return;
+    }
+
+    if(accounts[username]){
+        regError.innerText = "Username sudah terdaftar!";
+        return;
+    }
+
+    accounts[username] = password;
+    localStorage.setItem('accounts', JSON.stringify(accounts));
+    
+    regError.style.color = "green";
+    regError.innerText = "Registrasi berhasil! Silakan login.";
+    
+    setTimeout(() => {
+        switchToLogin();
+        document.getElementById("regUsername").value = "";
+        document.getElementById("regPassword").value = "";
+        document.getElementById("regPasswordConfirm").value = "";
+    }, 1500);
+}
+
+function login(){
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+    let error = document.getElementById("error");
+
+    error.innerText = "";
+
+    if(username === "" || password === ""){
+        error.innerText = "Username dan password harus diisi!";
+        return;
+    }
+
+    if(!accounts[username]){
+        error.innerText = "Username tidak ditemukan!";
+        return;
+    }
+
+    if(accounts[username] !== password){
+        error.innerText = "Password salah!";
+        return;
+    }
+
+    loggedInUser = username;
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("mainPage").classList.remove("hidden");
+    document.getElementById("welcomeText").innerText = 
+        "Selamat Datang, " + username + " 🌸";
+}
+
+function logout(){
+    loggedInUser = null;
+    document.getElementById("mainPage").classList.add("hidden");
+    document.getElementById("loginPage").style.display = "flex";
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("error").innerText = "";
+}
+
+function showSection(id){
+    let sections = document.querySelectorAll(".section");
+    sections.forEach(sec => sec.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+function switchToLogin(){
+    document.getElementById("registerPage").style.display = "none";
+    document.getElementById("loginPage").style.display = "flex";
+}
+
+function switchToRegister(){
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("registerPage").style.display = "flex";
+}
+</script>
+
+</body>
+</html>
